@@ -1,4 +1,131 @@
+on early-init
+    # Set up recovery environment early
+    setprop ro.twrp.boot 1
+    setprop ro.twrp.version 12.1
+
+on init
+    # TWRP 12.1 system root configuration
+    export ANDROID_ROOT /system_root
+    export ANDROID_DATA /data
+    export ANDROID_STORAGE /storage
+    export EXTERNAL_STORAGE /sdcard
+    
+    # Create essential directories
+    mkdir /system_root
+    mkdir /vendor
+    mkdir /product
+    mkdir /system_ext
+    mkdir /odm
+    
+    # Mount points for TWRP 12.1
+    mkdir /tmp 0755 root root
+    mkdir /cache 0770 system cache
+    mkdir /config 0500 root root
+    
+    # Samsung specific directories
+    mkdir /efs 0771 radio system
+    mkdir /cpefs 0771 radio system
+    
+    # Set up permissions for recovery
+    chmod 0755 /system/recovery-from-boot.p
+    
+    # Load important modules for Samsung devices
+    insmod /vendor/lib/modules/sec_touchscreen.ko
+
 on fs
     export ANDROID_ROOT /system_root
+    
+    # Wait for block devices
+    wait /dev/block/platform/13540000.dwmmc0/by-name/system
+    wait /dev/block/platform/13540000.dwmmc0/by-name/vendor
+    wait /dev/block/platform/13540000.dwmmc0/by-name/userdata
+    wait /dev/block/platform/13540000.dwmmc0/by-name/cache
+    wait /dev/block/platform/13540000.dwmmc0/by-name/boot
+    wait /dev/block/platform/13540000.dwmmc0/by-name/recovery
+    wait /dev/block/platform/13540000.dwmmc0/by-name/efs
+    
+    # Mount essential partitions for TWRP 12.1
+    mount ext4 /dev/block/platform/13540000.dwmmc0/by-name/system /system_root ro barrier=1
+    mount ext4 /dev/block/platform/13540000.dwmmc0/by-name/vendor /vendor ro barrier=1
+    mount ext4 /dev/block/platform/13540000.dwmmc0/by-name/cache /cache nosuid nodev barrier=1
+    
+    # Bind mount system for compatibility
+    mount none /system_root/system /system bind
+    
+    # Set up vendor overlay for TWRP 12.1
+    mount none /vendor /system/vendor bind rec
+
+on post-fs
+    # Set up recovery properties
+    setprop ro.recovery.id ${ro.serialno}
+    
+    # Start essential services for TWRP 12.1
+    start hwservicemanager
+    start servicemanager
+    
+    # Load firmware for Samsung devices
+    write /sys/kernel/boot_adsp/boot 1
 
 on boot
+    # Configure CPU governor for recovery
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor performance
+    
+    # Set up display brightness
+    write /sys/class/backlight/panel/brightness 162
+    
+    # Configure USB for recovery
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 04e8
+    write /sys/class/android_usb/android0/idProduct 6860
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/iManufacturer Samsung
+    write /sys/class/android_usb/android0/iProduct "Galaxy On7 Prime"
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    
+    # Enable touch screen for recovery
+    write /sys/class/sec/tsp/cmd store,get_threshold
+    
+    # Configure vibrator
+    chown system system /sys/class/timed_output/vibrator/enable
+    chmod 0660 /sys/class/timed_output/vibrator/enable
+    
+    # Samsung specific hardware initialization
+    write /sys/devices/platform/13870000.i2c/i2c-4/4-0048/input/input0/enabled 1
+    
+    # Set up thermal management for recovery
+    write /sys/class/thermal/thermal_zone0/mode enabled
+    write /sys/class/thermal/thermal_zone1/mode enabled
+
+on property:twrp.decrypt.done=true
+    # Post-decryption setup
+    setprop ro.crypto.state encrypted
+    
+on property:ro.twrp.sar=true
+    # System-as-root specific setup
+    symlink /system_root/system /system
+
+# Services for TWRP 12.1
+service hwservicemanager /system/bin/hwservicemanager
+    class core
+    user system
+    group system readproc
+    onrestart setprop hwservicemanager.ready false
+    writepid /dev/cpuset/system-background/tasks
+
+service servicemanager /system/bin/servicemanager
+    class core
+    user system
+    group system readproc
+    writepid /dev/cpuset/system-background/tasks
+
+# Samsung specific services
+service tzdaemon /vendor/bin/tzdaemon
+    class core
+    user system
+    group system
+
+service gpsd /vendor/bin/gpsd -c /vendor/etc/gps.xml
+    class main
+    user gps
+    group system inet net_raw

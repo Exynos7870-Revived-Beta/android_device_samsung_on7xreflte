@@ -1,5 +1,5 @@
 #
-# Copyright 2017 The Android Open Source Project
+# Copyright 2025 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +17,19 @@
 LOCAL_PATH := device/samsung/on7xreflte/
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
-PRODUCT_MAKEFILES := $(LOCAL_PATH)/omni_on7xreflte.mk
+
+PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/twrp_on7xreflte.mk
+
+COMMON_LUNCH_CHOICES := \
+    twrp_on7xreflte-user \
+    twrp_on7xreflte-userdebug \
+    twrp_on7xreflte-eng
+
+# TWRP 12.1 compatibility
+ALL_DEFAULT_INSTALLED_MODULES += \
+    $(PRODUCT_MAKEFILES)
+
+# Device-specific properties for TWRP 12.1
+PRODUCT_ENFORCE_RRO_TARGETS := *
+PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS := vendor/twrp
