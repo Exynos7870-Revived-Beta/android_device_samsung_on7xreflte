@@ -34,9 +34,6 @@ PRODUCT_MANUFACTURER := samsung
 
 PRODUCT_GMS_CLIENTID_BASE := android-samsung
 
-# TWRP specific build flags
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
-
 # Enable project treble vndk
 PRODUCT_TARGET_VNDK_VERSION := 30
 PRODUCT_EXTRA_VNDK_VERSIONS := 30
