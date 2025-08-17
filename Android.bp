@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2025 Team-Win Recovery Project
+// Copyright (C) 2025 @batuhantrkgl
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,51 +14,23 @@
 // limitations under the License.
 //
 
-package {
-    default_applicable_licenses: ["Android-Apache-2.0"],
-}
-
-android_app {
-    name: "twrp_on7xreflte",
-    
-    srcs: ["**/*.java"],
-    
-    platform_apis: true,
-    certificate: "platform",
-    privileged: true,
-    
-    static_libs: [
-        "androidx.preference_preference",
-        "androidx.core_core",
-        "androidx.fragment_fragment",
-    ],
-    
-    // TWRP 12.1 specific configurations
-    sdk_version: "current",
-    min_sdk_version: "23",
-    target_sdk_version: "32",
-    
-    // Build flags for TWRP 12.1
-    optimize: {
-        enabled: false,
-    },
-    
-    dex_preopt: {
-        enabled: false,
-    },
-    
-    // Recovery specific settings
-    recovery_available: true,
-    vendor_available: false,
-    
-    // Compatibility with Android 12.1
-    updatable: false,
-}
-
-// Device-specific recovery resources
 prebuilt_etc {
-    name: "twrp_on7xreflte_recovery_resources",
-    src: "recovery/root/etc/recovery.fstab",
-    recovery: true,
+    name: "recovery.fstab.exynos7870",
+    src: "recovery/etc/recovery.fstab",
     filename: "recovery.fstab",
+    recovery: true,
+}
+
+prebuilt_etc {
+    name: "init.recovery.exynos7870.rc",
+    src: "recovery/init.recovery.exynos7870.rc",
+    sub_dir: "init",
+    recovery: true,
+}
+
+prebuilt_etc {
+    name: "init.recovery.usb.rc", 
+    src: "recovery/init.recovery.usb.rc",
+    sub_dir: "init",
+    recovery: true,
 }

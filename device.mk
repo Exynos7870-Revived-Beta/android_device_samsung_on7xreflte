@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2025 Team-Win Recovery Project
+# Copyright (C) 2025 @batuhantrkgl
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 LOCAL_PATH := device/samsung/on7xreflte
 
-# Device API level (Android Pie)
-PRODUCT_SHIPPING_API_LEVEL := 28
+# Device API level (Android Marshmallow)
+PRODUCT_SHIPPING_API_LEVEL := 23
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
@@ -26,7 +26,7 @@ PRODUCT_SOONG_NAMESPACES += \
 # No dynamic partitions for older Samsung devices
 PRODUCT_USE_DYNAMIC_PARTITIONS := false
 
-# Boot control HAL
+# Boot control HAL (minimal for recovery)
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl \
     android.hardware.boot@1.0-service
@@ -36,12 +36,12 @@ PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl \
     android.hardware.health@2.1-service
 
-# Keymaster HAL
+# Keymaster HAL (for encryption)
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl \
     android.hardware.keymaster@3.0-service
 
-# Gatekeeper HAL
+# Gatekeeper HAL (for encryption)
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
     android.hardware.gatekeeper@1.0-service
@@ -51,20 +51,11 @@ PRODUCT_PACKAGES += \
     init.recovery.exynos7870.rc \
     init.recovery.usb.rc
 
-# Update engine
+# Update engine (for TWRP 12.1 compatibility)
 PRODUCT_PACKAGES += \
     update_engine \
     update_engine_sideload \
     update_verifier
-
-# TWRP Configuration
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/etc/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY)/root/etc/recovery.fstab
-
-# TWRP 12.1 specific packages for Samsung
-PRODUCT_PACKAGES += \
-    qcom_decrypt \
-    qcom_decrypt_fbe
 
 # Additional tools for TWRP 12.1
 PRODUCT_PACKAGES += \
@@ -72,46 +63,38 @@ PRODUCT_PACKAGES += \
     libz.recovery \
     libcrypto.recovery
 
-# Device-specific properties
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.treble.enabled=false \
-    ro.vendor.build.security_patch=$(PLATFORM_SECURITY_PATCH) \
-    ro.product.first_api_level=$(PRODUCT_SHIPPING_API_LEVEL)
-
-# Legacy device - no VNDK
-PRODUCT_TARGET_VNDK_VERSION := 
-PRODUCT_EXTRA_VNDK_VERSIONS := 
-
 # Recovery modules
 PRODUCT_HOST_PACKAGES += \
     libandroidicu
-
-# Samsung Exynos 7870 specific properties
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware=samsungexynos7870 \
-    ro.hardware.chipname=exynos7870 \
-    ro.soc.manufacturer=samsung \
-    ro.soc.model=exynos7870
-
-# Crypto for Samsung FDE/FBE
-PRODUCT_PACKAGES += \
-    libcryptfs_hw
 
 # Additional recovery tools
 PRODUCT_PACKAGES += \
     resetprop
 
-# Legacy USB configuration
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp
-
-# Samsung specific properties for older devices
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.config.low_ram=false \
-    ro.arch=arm64 \
-    ro.sf.lcd_density=320
-
 # Recovery-specific tools for older Samsung devices
 PRODUCT_PACKAGES += \
     toybox_recovery \
     toolbox_recovery
+
+# Samsung-specific crypto support
+PRODUCT_PACKAGES += \
+    libcrypto \
+    libssl
+
+# MINIMAL PROPERTY OVERRIDES
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.treble.enabled=false \
+    ro.product.first_api_level=23 \
+    ro.hardware=samsungexynos7870 \
+    ro.hardware.chipname=exynos7870 \
+    ro.soc.manufacturer=samsung \
+    ro.soc.model=exynos7870 \
+    ro.config.low_ram=false \
+    ro.arch=arm64 \
+    ro.sf.lcd_density=320 \
+    ro.crypto.state=encrypted \
+    ro.crypto.type=file
+
+# Legacy USB configuration
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp
