@@ -4,7 +4,7 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
 
 <div align="center">
-  <img src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a6-2018-1.jpg" width="400">
+  <img src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-j7-prime2.jpg" width="400">
 </div>
 
 ## About Device
