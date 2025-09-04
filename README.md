@@ -19,7 +19,7 @@ The Samsung Galaxy J7 Prime 2 or Samsung Galaxy On7 Prime (codenamed _"on7xreflt
 | **CPU** | Octa-core, 1600 MHz, ARM Cortex-A53, 32/64bit, 14 nm |
 | **GPU** | Mali-T830 MP1 |
 | **Memory** | 3/4GB (LPDDR3X) |
-| **Shipped Android version** | 7.1.1, upgradable to Android 9.0 (Pie) |
+| **Shipped Android version** | Android 7.1.1, upgradable to Android 9.0 (Pie) |
 | **Storage** | 32/64GB eMMC 5.1 flash storage |
 | **Battery** | Non-removable Li-Io 3300mAh |
 | **Dimensions** | 151.7 x 75 x 8 mm (5.97 x 2.95 x 0.31 in) |
