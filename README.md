@@ -39,7 +39,7 @@ lunch lineage_on7xreflte-userdebug
 # Build
 mka bacon
 ```
-
+ 
 ## Device Tree Status
 | Feature | Status |
 |:--------|:-------------|
