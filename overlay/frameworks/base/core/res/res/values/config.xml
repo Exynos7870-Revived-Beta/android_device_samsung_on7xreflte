@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+** Copyright 2014, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<resources>
+    <!-- Flag indicating whether we should enable the automatic brightness in Settings. -->
+    <bool name="config_automatic_brightness_available">false</bool>
+
+    <!-- Minimum screen brightness setting allowed by the power manager. -->
+    <integer name="config_screenBrightnessSettingMinimum">1</integer>
+
+    <!-- Default screen brightness setting. -->
+    <integer name="config_screenBrightnessSettingDefault">134</integer>
+
+    <!-- Maximum screen brightness allowed by the power manager. -->
+    <integer name="config_screenBrightnessSettingMaximum">255</integer>
+
+    <!-- Screen brightness used to dim the screen when the user activity timeout expires. -->
+    <integer name="config_screenBrightnessDim">50</integer>
+
+    <!-- Whether a software navigation bar should be shown. Has capacitive touchkeys + physical home. -->
+    <bool name="config_showNavigationBar">false</bool>
+
+    <!-- Hardware keys present on the device: Home(1) + Back(2) + App switch(16) + Volume(64) = 83 -->
+    <integer name="config_deviceHardwareKeys">83</integer>
+
+    <!-- Hardware wake keys: Home(1) + Volume(64) = 65 -->
+    <integer name="config_deviceHardwareWakeKeys">65</integer>
+
+    <!-- enable support for configure max aspect ratio per app -->
+    <bool name="config_haveHigherAspectRatioScreen">false</bool>
+
+    <!-- BurnIn protection: False for PLS TFT LCD -->
+    <bool name="config_enableBurnInProtection">false</bool>
+
+    <!-- WIFI_HIDL_FEATURE_DISABLE_AP_MAC_RANDOMIZATION is deprecated in R so we move to overlay -->
+    <bool name="config_wifi_ap_randomization_supported">false</bool>
+
+    <!-- Fingerprint hardware support gestures -->
+    <bool name="config_fingerprintSupportsGestures">false</bool>
+</resources>
