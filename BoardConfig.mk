@@ -112,6 +112,6 @@ TARGET_KERNEL_ADDITIONAL_FLAGS := HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-l
 
 # DTBH packing and mkbootimg wrapper
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --dt $(OUT_DIR)/target/product/on7xreflte/obj/KERNEL_OBJ/arch/$(TARGET_ARCH)/boot/dtb.img
-BOARD_MKBOOTIMG_ARGS += --max-image-size 0x2000000 --expect-ramdisk-compression lzma
+BOARD_MKBOOTIMG_ARGS += --max-image-size 39845888 --expect-ramdisk-compression lzma
 BOARD_CUSTOM_MKBOOTIMG = $(DEVICE_PATH)/tools/mkbootimg-dt $(HOST_OUT_EXECUTABLES)/mkbootimg
 BOARD_RAMDISK_USE_LZMA := true
