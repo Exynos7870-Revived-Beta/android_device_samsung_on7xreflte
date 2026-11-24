@@ -38,3 +38,12 @@ PRODUCT_BRAND := samsung
 PRODUCT_MODEL := Samsung Galaxy J7 Prime Refreshed
 PRODUCT_MANUFACTURER := samsung
 PRODUCT_GMS_CLIENTID_BASE := android-samsung
+
+# TWRP Crypto & Keymaster property overrides
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.keystore=samsungexynos7870 \
+    ro.hardware.gatekeeper=samsungexynos7870 \
+    keymaster_ver=3.0
+
+PRODUCT_PACKAGES += \
+    libresetprop.recovery
